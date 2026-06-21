@@ -1,0 +1,367 @@
+
+<div style="font-family: var(--font-sans); padding: 1rem 0;">
+  <h2 class="sr-only">Familien-Dashboard mit klickbarer Wettervorhersage</h2>
+
+  <div id="app">
+
+    <!-- HAUPTANSICHT -->
+    <div id="view-main">
+      <div style="background: #1a1a2e; border-radius: var(--border-radius-lg); padding: 12px; border: 0.5px solid var(--color-border-tertiary);">
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 16px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="font-size: 32px; font-weight: 500; color: #e8e8f0; letter-spacing: 2px;">21:41</div>
+            <div style="font-size: 13px; color: #8888aa; margin-top: 2px;">Sonntag, 21. Juni 2026</div>
+          </div>
+
+          <!-- Wetter klickbar -->
+          <div onclick="showWeather()" style="background: #16213e; border-radius: 10px; padding: 12px 16px; display: flex; align-items: center; justify-content: space-between; gap: 8px; cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#1e2d4e'" onmouseout="this.style.background='#16213e'">
+            <div style="text-align: center; flex-shrink: 0;">
+              <div style="font-size: 30px; color: #f0c040;">☀</div>
+              <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">Dresden</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 28px; font-weight: 500; color: #e8e8f0; line-height: 1;">24°</div>
+              <div style="font-size: 11px; color: #8888aa;">Sonnig</div>
+              <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑ 27° · ↓ 14°</div>
+            </div>
+            <div style="width: 0.5px; height: 48px; background: #2a3a5a; flex-shrink: 0;"></div>
+            <div style="text-align: center; flex-shrink: 0;">
+              <div style="font-size: 11px; color: #8888aa; margin-bottom: 4px;">UV-Index</div>
+              <div style="width: 36px; height: 36px; border-radius: 50%; background: #e87050; display: flex; align-items: center; justify-content: center; margin: 0 auto;">
+                <span style="font-size: 16px; font-weight: 500; color: #fff;">7</span>
+              </div>
+              <div style="font-size: 11px; color: #e87050; margin-top: 4px; font-weight: 500;">Hoch</div>
+            </div>
+            <div style="font-size: 11px; color: #5d9cec; flex-shrink: 0;">
+              <i class="ti ti-chevron-right" style="font-size:16px" aria-hidden="true"></i>
+            </div>
+          </div>
+
+          <div style="background: #16213e; border-radius: 10px; min-height: 80px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+            <div style="position: absolute; inset: 0; background: linear-gradient(135deg, #2a1a3e 0%, #1a2a3e 100%); opacity: 0.8;"></div>
+            <div style="position: relative; text-align: center;">
+              <i class="ti ti-photo" style="font-size: 28px; color: #7a88cc;" aria-hidden="true"></i>
+              <div style="font-size: 11px; color: #8888aa; margin-top: 4px;">Fotoshow</div>
+              <div style="font-size: 10px; color: #666688;">Urlaub 2025</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 8px;">
+          <div onclick="showWeek()" style="background: #16213e; border-radius: 10px; padding: 14px; cursor: pointer; transition: background 0.15s;" onmouseover="this.style.background='#1e2d4e'" onmouseout="this.style.background='#16213e'">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+              <div style="font-size: 12px; color: #8888aa; text-transform: uppercase; letter-spacing: 1px;">Termine</div>
+              <div style="font-size: 11px; color: #5d9cec; display: flex; align-items: center; gap: 4px;"><i class="ti ti-calendar-week" style="font-size:14px" aria-hidden="true"></i> Wochenansicht</div>
+            </div>
+            <div style="font-size: 11px; color: #5d9cec; margin-bottom: 6px; font-weight: 500;">HEUTE</div>
+            <div id="main-today" style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;"></div>
+            <div style="font-size: 11px; color: #8888aa; margin-bottom: 6px; font-weight: 500;">MORGEN</div>
+            <div id="main-tomorrow" style="display: flex; flex-direction: column; gap: 5px; margin-bottom: 10px;"></div>
+            <div style="border-top: 0.5px solid #2a2a4a; padding-top: 8px; margin-top: 4px;">
+              <div id="filter-bar-main" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+            </div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 14px;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Smart Home</div>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+              <div style="background: #f0c04022; border: 0.5px solid #f0c04044; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-bulb" style="font-size: 22px; color: #f0c040;" aria-hidden="true"></i><div style="font-size: 11px; color: #e8e8f0; margin-top: 4px;">Flur</div><div style="font-size: 10px; color: #f0c040;">An</div></div>
+              <div style="background: #1e2d4e; border: 0.5px solid #2a3a5a; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-bulb" style="font-size: 22px; color: #4a5a7a;" aria-hidden="true"></i><div style="font-size: 11px; color: #8888aa; margin-top: 4px;">Wohnzimmer</div><div style="font-size: 10px; color: #666688;">Aus</div></div>
+              <div style="background: #1e2d4e; border: 0.5px solid #2a3a5a; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-temperature" style="font-size: 22px; color: #e87050;" aria-hidden="true"></i><div style="font-size: 11px; color: #e8e8f0; margin-top: 4px;">Heizung</div><div style="font-size: 10px; color: #e87050;">21°C</div></div>
+              <div style="background: #50d9a022; border: 0.5px solid #50d9a044; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-lock" style="font-size: 22px; color: #50d9a0;" aria-hidden="true"></i><div style="font-size: 11px; color: #e8e8f0; margin-top: 4px;">Haustür</div><div style="font-size: 10px; color: #50d9a0;">Geschlossen</div></div>
+              <div style="background: #1e2d4e; border: 0.5px solid #2a3a5a; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-layout-rows" style="font-size: 22px; color: #4a5a7a;" aria-hidden="true"></i><div style="font-size: 11px; color: #8888aa; margin-top: 4px;">Rolladen</div><div style="font-size: 10px; color: #666688;">100%</div></div>
+              <div style="background: #1e2d4e; border: 0.5px solid #2a3a5a; border-radius: 8px; padding: 10px; text-align: center;"><i class="ti ti-shield" style="font-size: 22px; color: #4a5a7a;" aria-hidden="true"></i><div style="font-size: 11px; color: #8888aa; margin-top: 4px;">Alarm</div><div style="font-size: 10px; color: #666688;">Deaktiviert</div></div>
+            </div>
+          </div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 8px; padding: 6px 8px; background: #12182e; border-radius: 8px;">
+          <div style="font-size: 11px; color: #444466;"><i class="ti ti-wifi" style="font-size: 13px; vertical-align: -2px;" aria-hidden="true"></i> Verbunden</div>
+          <div style="font-size: 11px; color: #444466;">Familien-Dashboard · Home Assistant</div>
+          <div style="font-size: 11px; color: #444466;"><i class="ti ti-microphone" style="font-size: 13px; vertical-align: -2px;" aria-hidden="true"></i> Sprachsteuerung aktiv</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WETTERVORHERSAGE -->
+    <div id="view-weather" style="display: none;">
+      <div style="background: #1a1a2e; border-radius: var(--border-radius-lg); padding: 12px; border: 0.5px solid var(--color-border-tertiary);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px;">
+          <button onclick="showMain()" style="background: #16213e; border: 0.5px solid #2a3a5a; color: #8888aa; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <i class="ti ti-arrow-left" style="font-size:14px" aria-hidden="true"></i> Zurück
+          </button>
+          <div style="font-size: 15px; font-weight: 500; color: #e8e8f0;">Wettervorhersage Dresden</div>
+          <div style="font-size: 12px; color: #8888aa;">7-Tage-Überblick</div>
+        </div>
+
+        <!-- Heute groß -->
+        <div style="background: #16213e; border-radius: 10px; padding: 16px; margin-bottom: 10px; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 16px;">
+            <div style="font-size: 48px; line-height: 1;">☀</div>
+            <div>
+              <div style="font-size: 13px; color: #5d9cec; font-weight: 500; margin-bottom: 2px;">HEUTE — Sonntag</div>
+              <div style="font-size: 36px; font-weight: 500; color: #e8e8f0; line-height: 1;">24°</div>
+              <div style="font-size: 13px; color: #8888aa; margin-top: 4px;">Sonnig · Gefühlt 26°</div>
+            </div>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px 24px;">
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">Max / Min</div>
+              <div style="font-size: 14px; color: #e8e8f0; font-weight: 500;">27° / 14°</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">UV-Index</div>
+              <div style="font-size: 14px; color: #e87050; font-weight: 500;">7 — Hoch</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">Luftfeuchtigkeit</div>
+              <div style="font-size: 14px; color: #e8e8f0; font-weight: 500;">52%</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">Wind</div>
+              <div style="font-size: 14px; color: #e8e8f0; font-weight: 500;">12 km/h SW</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">Sonnenaufgang</div>
+              <div style="font-size: 14px; color: #f0c040; font-weight: 500;">04:58</div>
+            </div>
+            <div style="text-align: center;">
+              <div style="font-size: 11px; color: #8888aa;">Sonnenuntergang</div>
+              <div style="font-size: 14px; color: #e87050; font-weight: 500;">21:24</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 weitere Tage -->
+        <div style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;">
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Mo</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">⛅</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">22°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑23 ↓13</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Bewölkt</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">10%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #639922; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">4</span></div></div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Di</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">🌧</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">18°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑19 ↓12</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Regen</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">80%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #639922; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">2</span></div></div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Mi</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">⛈</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">17°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑18 ↓11</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Gewitter</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">90%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #639922; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">1</span></div></div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Do</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">⛅</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">20°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑21 ↓13</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Wechselhaft</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">30%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #639922; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">3</span></div></div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Fr</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">🌤</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">23°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑24 ↓14</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Heiter</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">15%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #BA7517; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">6</span></div></div>
+          </div>
+          <div style="background: #16213e; border-radius: 10px; padding: 12px 8px; text-align: center;">
+            <div style="font-size: 12px; color: #8888aa; margin-bottom: 6px;">Sa</div>
+            <div style="font-size: 24px; margin-bottom: 6px;">☀</div>
+            <div style="font-size: 14px; font-weight: 500; color: #e8e8f0;">26°</div>
+            <div style="font-size: 11px; color: #8888aa; margin-top: 2px;">↑26 ↓15</div>
+            <div style="font-size: 10px; color: #8888aa; margin-top: 6px; padding-top: 6px; border-top: 0.5px solid #2a2a4a;">Sonnig</div>
+            <div style="display: flex; align-items: center; justify-content: center; gap: 3px; margin-top: 4px;">
+              <i class="ti ti-droplet" style="font-size:11px; color:#5d9cec;" aria-hidden="true"></i>
+              <span style="font-size: 11px; color: #5d9cec;">5%</span>
+            </div>
+            <div style="margin-top: 6px;"><div style="width: 24px; height: 24px; border-radius: 50%; background: #e87050; display: inline-flex; align-items: center; justify-content: center;"><span style="font-size: 11px; color: #fff; font-weight: 500;">8</span></div></div>
+          </div>
+        </div>
+
+        <!-- Legende UV -->
+        <div style="display: flex; align-items: center; gap: 16px; margin-top: 10px; padding: 8px 12px; background: #12182e; border-radius: 8px;">
+          <div style="font-size: 11px; color: #8888aa;">UV-Index:</div>
+          <div style="display: flex; align-items: center; gap: 4px;"><div style="width:14px;height:14px;border-radius:50%;background:#639922;"></div><span style="font-size:11px;color:#8888aa;">1–2 Niedrig</span></div>
+          <div style="display: flex; align-items: center; gap: 4px;"><div style="width:14px;height:14px;border-radius:50%;background:#f0c040;"></div><span style="font-size:11px;color:#8888aa;">3–5 Mittel</span></div>
+          <div style="display: flex; align-items: center; gap: 4px;"><div style="width:14px;height:14px;border-radius:50%;background:#BA7517;"></div><span style="font-size:11px;color:#8888aa;">6–7 Hoch</span></div>
+          <div style="display: flex; align-items: center; gap: 4px;"><div style="width:14px;height:14px;border-radius:50%;background:#e87050;"></div><span style="font-size:11px;color:#8888aa;">8–10 Sehr hoch</span></div>
+          <div style="display: flex; align-items: center; gap: 4px;"><div style="width:14px;height:14px;border-radius:50%;background:#9966cc;"></div><span style="font-size:11px;color:#8888aa;">11+ Extrem</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WOCHENANSICHT -->
+    <div id="view-week" style="display: none;">
+      <div style="background: #1a1a2e; border-radius: var(--border-radius-lg); padding: 12px; border: 0.5px solid var(--color-border-tertiary);">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px;">
+          <button onclick="showMain()" style="background: #16213e; border: 0.5px solid #2a3a5a; color: #8888aa; border-radius: 8px; padding: 6px 14px; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px;">
+            <i class="ti ti-arrow-left" style="font-size:14px" aria-hidden="true"></i> Zurück
+          </button>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <button onclick="changeWeek(-1)" style="background: #16213e; border: 0.5px solid #2a3a5a; color: #8888aa; border-radius: 8px; padding: 6px 12px; font-size: 16px; cursor: pointer;">‹</button>
+            <div id="week-label" style="font-size: 15px; font-weight: 500; color: #e8e8f0; min-width: 200px; text-align: center;"></div>
+            <button onclick="changeWeek(1)" style="background: #16213e; border: 0.5px solid #2a3a5a; color: #8888aa; border-radius: 8px; padding: 6px 12px; font-size: 16px; cursor: pointer;">›</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 6px;">
+            <div style="font-size: 12px; color: #8888aa;">Springe zu:</div>
+            <select id="month-select" onchange="jumpToMonth()" style="background: #16213e; border: 0.5px solid #2a3a5a; color: #e8e8f0; border-radius: 8px; padding: 6px 10px; font-size: 13px; cursor: pointer;"></select>
+          </div>
+        </div>
+        <div id="week-grid" style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; min-height: 320px;"></div>
+        <div style="border-top: 0.5px solid #2a2a4a; padding-top: 8px; margin-top: 10px;">
+          <div id="filter-bar-week" style="display: flex; flex-wrap: wrap; gap: 6px;"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+<script>
+const MONTHS = ['Januar','Februar','März','April','Mai','Juni','Juli','August','September','Oktober','November','Dezember'];
+const DAYS = ['So','Mo','Di','Mi','Do','Fr','Sa'];
+const CATEGORIES = [
+  { key: 'steve_privat', label: 'Steve privat',   color: '#5d9cec' },
+  { key: 'steve_job',    label: 'Steve beruflich', color: '#378add' },
+  { key: 'valeria',      label: 'Valeria',         color: '#e87cbe' },
+  { key: 'friederike',   label: 'Friederike',      color: '#f0c040' },
+  { key: 'familie',      label: 'Familie',         color: '#50d9a0' },
+];
+const EVENTS = [
+  { day: 0, title: 'Zahnarzt',         time: '09:00', who: 'steve_privat' },
+  { day: 0, title: 'Teammeeting',      time: '10:00', who: 'steve_job' },
+  { day: 0, title: 'Yoga Kurs',        time: '18:00', who: 'valeria' },
+  { day: 1, title: 'Schulausflug',     time: '08:00', who: 'friederike' },
+  { day: 1, title: 'Familienfest Oma', time: '15:00', who: 'familie' },
+  { day: 2, title: 'Elternabend',      time: '19:00', who: 'familie' },
+  { day: 2, title: 'Klavierstunde',    time: '16:00', who: 'friederike' },
+  { day: 3, title: '1:1 Meeting',      time: '11:00', who: 'steve_job' },
+  { day: 3, title: 'Friseur',          time: '14:00', who: 'valeria' },
+  { day: 4, title: 'Sport',            time: '07:00', who: 'valeria' },
+  { day: 4, title: 'Projektpräs.',     time: '14:00', who: 'steve_job' },
+  { day: 5, title: 'Kino',             time: '19:00', who: 'familie' },
+  { day: 6, title: 'Geburtstag',       time: '12:00', who: 'familie' },
+];
+const colorMap = Object.fromEntries(CATEGORIES.map(c => [c.key, c.color]));
+let activeFilters = new Set(CATEGORIES.map(c => c.key));
+let currentWeekOffset = 0;
+
+function showMain() {
+  document.getElementById('view-main').style.display = 'block';
+  document.getElementById('view-weather').style.display = 'none';
+  document.getElementById('view-week').style.display = 'none';
+}
+function showWeather() {
+  document.getElementById('view-main').style.display = 'none';
+  document.getElementById('view-weather').style.display = 'block';
+  document.getElementById('view-week').style.display = 'none';
+}
+function showWeek() {
+  currentWeekOffset = 0;
+  document.getElementById('view-main').style.display = 'none';
+  document.getElementById('view-weather').style.display = 'none';
+  document.getElementById('view-week').style.display = 'block';
+  populateMonthSelect();
+  renderFilterBars();
+  renderWeek();
+}
+
+function toggleFilter(key) {
+  if (activeFilters.has(key)) { if (activeFilters.size === 1) return; activeFilters.delete(key); }
+  else activeFilters.add(key);
+  renderFilterBars();
+  renderMainEvents();
+  if (document.getElementById('view-week').style.display !== 'none') renderWeek();
+}
+
+function renderFilterBars() {
+  ['filter-bar-main','filter-bar-week'].forEach(id => {
+    const bar = document.getElementById(id); if (!bar) return;
+    bar.innerHTML = '';
+    CATEGORIES.forEach(cat => {
+      const active = activeFilters.has(cat.key);
+      const btn = document.createElement('button');
+      btn.onclick = (e) => { e.stopPropagation(); toggleFilter(cat.key); };
+      btn.style.cssText = `display:flex;align-items:center;gap:5px;padding:4px 10px;border-radius:20px;font-size:11px;cursor:pointer;border:1.5px solid ${cat.color};background:${active?cat.color+'28':'transparent'};color:${active?cat.color:'#555577'};opacity:${active?'1':'0.45'};transition:all 0.15s;`;
+      btn.innerHTML = `<div style="width:7px;height:7px;border-radius:50%;background:${active?cat.color:'#555577'};flex-shrink:0;"></div>${cat.label}`;
+      bar.appendChild(btn);
+    });
+  });
+}
+
+function renderMainEvents() {
+  ['main-today','main-tomorrow'].forEach((id, idx) => {
+    const container = document.getElementById(id); if (!container) return;
+    const events = EVENTS.filter(e => e.day === idx && activeFilters.has(e.who));
+    container.innerHTML = events.length === 0
+      ? `<div style="font-size:12px;color:#444466;padding:6px 0;">Keine Termine</div>`
+      : events.map(e => `<div style="display:flex;align-items:center;gap:8px;background:#1e2d4e;border-radius:6px;padding:7px 10px;"><div style="width:3px;height:32px;background:${colorMap[e.who]};border-radius:2px;flex-shrink:0;"></div><div><div style="font-size:13px;color:#e8e8f0;">${e.title}</div><div style="font-size:11px;color:#8888aa;">${e.time} · ${CATEGORIES.find(c=>c.key===e.who).label}</div></div></div>`).join('');
+  });
+}
+
+function getMonday(offset) {
+  const now = new Date(2026,5,21); const day = now.getDay();
+  const monday = new Date(now);
+  monday.setDate(now.getDate() - (day===0?6:day-1) + offset*7);
+  return monday;
+}
+function changeWeek(dir) { currentWeekOffset += dir; renderWeek(); syncMonthSelect(); }
+function jumpToMonth() {
+  const targetMonth = parseInt(document.getElementById('month-select').value);
+  currentWeekOffset = Math.round((new Date(2026,targetMonth,1) - getMonday(0)) / (7*24*3600*1000));
+  renderWeek();
+}
+function populateMonthSelect() {
+  const sel = document.getElementById('month-select'); sel.innerHTML = '';
+  for (let i=0;i<12;i++) { const o=document.createElement('option'); o.value=i; o.textContent=MONTHS[i]+' 2026'; sel.appendChild(o); }
+  syncMonthSelect();
+}
+function syncMonthSelect() { document.getElementById('month-select').value = getMonday(currentWeekOffset).getMonth(); }
+function renderWeek() {
+  const monday = getMonday(currentWeekOffset);
+  const sunday = new Date(monday); sunday.setDate(monday.getDate()+6);
+  const fmt = d => d.getDate()+'. '+MONTHS[d.getMonth()];
+  document.getElementById('week-label').textContent = fmt(monday)+' – '+fmt(sunday)+' 2026';
+  const today = new Date(2026,5,21);
+  const grid = document.getElementById('week-grid'); grid.innerHTML = '';
+  for (let i=0;i<7;i++) {
+    const day = new Date(monday); day.setDate(monday.getDate()+i);
+    const isToday = day.toDateString()===today.toDateString();
+    const dayEvents = EVENTS.filter(e=>e.day===i && activeFilters.has(e.who));
+    const col = document.createElement('div');
+    col.style.cssText=`background:${isToday?'#1e2d4e':'#16213e'};border-radius:8px;padding:8px;border:0.5px solid ${isToday?'#3a5a8e':'#2a3a5a'};`;
+    col.innerHTML=`<div style="text-align:center;margin-bottom:8px;padding-bottom:6px;border-bottom:0.5px solid #2a2a4a;"><div style="font-size:11px;color:${isToday?'#5d9cec':'#8888aa'};font-weight:${isToday?'500':'400'};">${DAYS[day.getDay()]}</div><div style="font-size:18px;font-weight:500;color:${isToday?'#fff':'#c0c0d8'};line-height:1.2;">${day.getDate()}</div></div><div style="display:flex;flex-direction:column;gap:4px;">${dayEvents.map(e=>`<div style="background:${colorMap[e.who]}18;border-left:3px solid ${colorMap[e.who]};border-radius:0 4px 4px 0;padding:4px 6px;"><div style="font-size:11px;color:${colorMap[e.who]};font-weight:500;">${e.time}</div><div style="font-size:11px;color:#c0c0d8;line-height:1.3;">${e.title}</div></div>`).join('')}${dayEvents.length===0?'<div style="font-size:11px;color:#444466;text-align:center;padding-top:8px;">–</div>':''}</div>`;
+    grid.appendChild(col);
+  }
+}
+
+renderFilterBars();
+renderMainEvents();
+</script>
